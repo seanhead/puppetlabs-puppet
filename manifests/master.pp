@@ -60,6 +60,7 @@
 class puppet::master (
   $modulepath = $::puppet::params::modulepath,
   $confdir = $::puppet::params::confdir,
+  $puppet_conf = $::puppet::params::puppet_conf,
   $manifest = $::puppet::params::manifest,
   $storeconfigs = false,
   $storeconfigs_dbadapter = $::puppet::params::storeconfigs_dbadapter,
@@ -93,11 +94,12 @@ class puppet::master (
 
   if $storeconfigs {
     class { 'puppet::storeconfigs':
-      dbadapter  => $storeconfigs_dbadapter,
-      dbuser     => $storeconfigs_dbuser,
-      dbpassword => $storeconfigs_dbpassword,
-      dbserver   => $storeconfigs_dbserver,
-      dbsocket   => $storeconfigs_dbsocket,
+      puppet_conf => $puppet_conf,
+      dbadapter   => $storeconfigs_dbadapter,
+      dbuser      => $storeconfigs_dbuser,
+      dbpassword  => $storeconfigs_dbpassword,
+      dbserver    => $storeconfigs_dbserver,
+      dbsocket    => $storeconfigs_dbsocket,
     }
   }
 
@@ -132,16 +134,16 @@ class puppet::master (
       priority => '40',
       docroot  => $puppet_docroot,
       template => 'puppet/apache2.conf.erb',
-      require  => [ File['/etc/puppet/rack/config.ru'], File['/etc/puppet/puppet.conf'] ],
+      require  => [ File["${confdir}/rack/config.ru"], File[$puppet_conf] ],
       ssl      => true,
     }
 
-    file { ["/etc/puppet/rack", "/etc/puppet/rack/public"]:
+    file { ["${confdir}/rack", "${confdir}/rack/public"]:
       ensure => directory,
       mode   => '0755',
     }
 
-    file { "/etc/puppet/rack/config.ru":
+    file { "${confdir}/rack/config.ru":
       ensure => present,
       source => "puppet:///modules/puppet/config.ru",
       mode   => '0644',
@@ -149,7 +151,7 @@ class puppet::master (
 
     concat::fragment { 'puppet.conf-master':
       order   => '05',
-      target  => "/etc/puppet/puppet.conf",
+      target  => $puppet_conf,
       content => template("puppet/puppet.conf-master.erb"),
     }
   } else {
@@ -161,7 +163,7 @@ class puppet::master (
 
     concat::fragment { 'puppet.conf-master':
       order   => '05',
-      target  => "/etc/puppet/puppet.conf",
+      target  => $puppet_conf,
       content => template("puppet/puppet.conf-master.erb"),
     }
 
@@ -169,7 +171,7 @@ class puppet::master (
       command   => '/usr/bin/nohup puppet master &',
       refresh   => '/usr/bin/pkill puppet && /usr/bin/nohup puppet master &',
       unless    => "/bin/ps -ef | grep -v grep | /bin/grep 'puppet master'",
-      require   => File['/etc/puppet/puppet.conf'],
+      require   => File[$puppet_conf],
       subscribe => Package[$puppet_master_package],
     }
   }
@@ -202,7 +204,7 @@ class puppet::master (
     notify       => $service_notify,
   }
 
-  File ['/etc/puppet'] {
+  File [$confdir] {
     require +> Package[$puppet_master_package],
     notify  +> $service_notify
   }

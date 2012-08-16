@@ -11,6 +11,7 @@
 # Sample Usage:
 #
 class puppet::storeconfigs (
+    $puppet_conf = $::puppet::params::puppet_conf,
     $dbadapter,
     $dbuser,
     $dbpassword,
@@ -38,7 +39,7 @@ class puppet::storeconfigs (
 
   concat::fragment { 'puppet.conf-master-storeconfig':
     order   => '06',
-    target  => "/etc/puppet/puppet.conf",
+    target  => $puppet_conf,
     content => template("puppet/puppet.conf-master-storeconfigs.erb");
   }
 

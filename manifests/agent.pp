@@ -43,7 +43,7 @@ class puppet::agent(
       command   => '/usr/bin/nohup puppet agent &',
       refresh   => '/usr/bin/pkill puppet && /usr/bin/nohup puppet agent &',
       unless    => "/bin/ps -ef | grep -v grep | /bin/grep 'puppet agent'",
-      require   => File['/etc/puppet/puppet.conf'],
+      require   => File[$puppet_conf],
       subscribe => Package[$puppet_agent_name],
     }
   } else {
@@ -53,13 +53,13 @@ class puppet::agent(
       ensure    => running,
       enable    => true,
       hasstatus => true,
-      require   => File['/etc/puppet/puppet.conf'],
+      require   => File[$puppet_conf],
       subscribe => Package[$puppet_agent_name],
       #before    => Service['httpd'];
     }
   }
 
-  File ['/etc/puppet'] {
+  File [$confdir] {
     require +> Package[$puppet_agent_name],
     notify  +> $service_notify
   }

@@ -144,6 +144,7 @@ class puppet (
     class {'puppet::master':
       version                   => $version,
       confdir                   => $confdir,
+      puppet_conf               => $puppet_conf,
       puppet_passenger          => $puppet_passenger,
       puppet_site               => $puppet_site,
       puppet_passenger_port     => $puppet_passenger_port,
@@ -190,7 +191,7 @@ class puppet (
     gid    => $group_id,
   }
 
-  file { '/etc/puppet':
+  file { $confdir:
     ensure       => directory,
     group        => 'puppet',
     owner        => 'puppet',
