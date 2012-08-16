@@ -177,17 +177,9 @@ class puppet::master (
     }
   }
 
-  if ! defined(Concat[$puppet_conf]) {
-    concat { $puppet_conf:
-      mode    => '0644',
-      require => $service_require,
-      notify  => $service_notify,
-    }
-  } else {
-    Concat<| title == $puppet_conf |> {
-      require => $service_require,
-      notify  +> $service_notify,
-    }
+  Concat<| title == $puppet_conf |> {
+    require => $service_require,
+    notify  +> $service_notify,
   }
 
   if ! defined(Concat::Fragment['puppet.conf-common']) {

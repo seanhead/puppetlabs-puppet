@@ -199,5 +199,9 @@ class puppet (
     recurselimit => '1',
   }
 
+  concat { $puppet_conf:
+    mode    => '0644',
+  }
+
 }
 
