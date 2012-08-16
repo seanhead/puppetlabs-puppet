@@ -127,13 +127,14 @@ class puppet::master (
       class { '::passenger': }
     }
 
-    apache::vhost { "puppet-$puppet_site":
-      port     => $puppet_passenger_port,
-      priority => '40',
-      docroot  => $puppet_docroot,
-      template => 'puppet/apache2.conf.erb',
-      require  => [ File['/etc/puppet/rack/config.ru'], File['/etc/puppet/puppet.conf'] ],
-      ssl      => true,
+    apache::vhost { "puppet-${puppet_site}":
+      servername => $puppet_site,
+      port       => $puppet_passenger_port,
+      priority   => '40',
+      docroot    => $puppet_docroot,
+      template   => 'puppet/apache2.conf.erb',
+      require    => [ File['/etc/puppet/rack/config.ru'], File['/etc/puppet/puppet.conf'] ],
+      ssl        => true,
     }
 
     file { ["/etc/puppet/rack", "/etc/puppet/rack/public"]:
