@@ -7,6 +7,7 @@
 #                               puppet.conf
 #   [*confdir*]               - The confdir configuration value in puppet.conf
 #   [*manifest*]              - The manifest configuration value in puppet.conf
+#   [*reporting*]             - Turn reporting on or off
 #   [*storeconfigs*]          - Boolean determining whether storeconfigs is
 #                               to be enabled.
 #   [*storeconfigs_dbadapter*] - The database adapter to use with storeconfigs
@@ -62,6 +63,7 @@ class puppet::master (
   $confdir = $::puppet::params::confdir,
   $puppet_conf = $::puppet::params::puppet_conf,
   $manifest = $::puppet::params::manifest,
+  $reporting = true,
   $storeconfigs = false,
   $storeconfigs_dbadapter = $::puppet::params::storeconfigs_dbadapter,
   $storeconfigs_dbuser = $::puppet::params::storeconfigs_dbuser,

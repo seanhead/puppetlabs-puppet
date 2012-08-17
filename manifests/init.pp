@@ -10,6 +10,7 @@
 #                               master service should be setup
 #   [*agent*]                 - Boolean determining whether the puppet agent
 #                               should be setup
+#   [*reporting*]             - Turn reporting on or off
 #   [*confdir*]               - The confdir configuration value in puppet.conf
 #   [*manifest*]              - The manifest configuration value in puppet.conf
 #   [*certname*]              - The certname configuration value in puppet.conf
@@ -81,6 +82,7 @@ class puppet (
   $version                  = 'present',
   $master                   = false,
   $agent                    = true,
+  $reporting                = true,
   $confdir                  = $puppet::params::confdir,
   $manifest                 = $puppet::params::manifest,
   $modulepath               = $puppet::params::modulepath,
@@ -177,6 +179,7 @@ class puppet (
       puppet_conf               => $puppet_conf,
       puppet_agent_name         => $puppet_agent_name,
       package_provider          => $package_provider,
+      reporting                 => $reporting,
     }
   }
 
