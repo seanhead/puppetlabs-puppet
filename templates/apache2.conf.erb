@@ -26,7 +26,7 @@ Listen <%= port %>
 
 	DocumentRoot <%= docroot %>
 	RackBaseURI /
-	<Directory <%= scope.lookupvar('puppet:confdir') %>/rack/>
+	<Directory <%= scope.lookupvar('puppet::confdir') %>/rack/>
 		Options None
 		AllowOverride None
 		Order allow,deny
