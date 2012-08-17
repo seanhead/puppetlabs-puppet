@@ -182,14 +182,6 @@ class puppet::master (
     notify  +> $service_notify,
   }
 
-  if ! defined(Concat::Fragment['puppet.conf-common']) {
-    concat::fragment { 'puppet.conf-common':
-      order   => '00',
-      target  => $puppet_conf,
-      content => template("puppet/puppet.conf-common.erb"),
-    }
-  }
-
   file { $puppet_vardir:
     ensure       => directory,
     recurse      => true,
