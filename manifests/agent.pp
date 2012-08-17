@@ -51,12 +51,12 @@ class puppet::agent(
     $service_notify = Service[$puppet_agent_service]
 
     service { $puppet_agent_service:
-      ensure    => running,
-      enable    => true,
-      hasstatus => true,
-      require   => File[$puppet_conf],
-      subscribe => Package[$puppet_agent_name],
-      #before    => Service['httpd'];
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      require    => File[$puppet_conf],
+      subscribe  => Package[$puppet_agent_name],
     }
   }
 
