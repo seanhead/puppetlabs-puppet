@@ -176,6 +176,7 @@ class puppet (
   if $agent {
     class {'puppet::agent':
       version                   => $version,
+      certname                  => $certname,
       puppet_defaults           => $puppet_defaults,
       puppet_agent_service      => $puppet_agent_service,
       puppet_server             => $puppet_server,
