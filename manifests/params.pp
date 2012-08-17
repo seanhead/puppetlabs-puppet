@@ -23,6 +23,7 @@ class puppet::params {
   $certname                         = $::fqdn
   $confdir                          = '/etc/puppet'
   $manifest                         = '/etc/puppet/manifests/site.pp'
+  $templatedir                      = '$confdir/templates'
   $puppet_site                      = $::fqdn
   $puppet_docroot                   = '/etc/puppet/rack/public/'
   $puppet_passenger_port            = '8140'

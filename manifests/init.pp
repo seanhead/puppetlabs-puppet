@@ -13,6 +13,7 @@
 #   [*reporting*]             - Turn reporting on or off
 #   [*confdir*]               - The confdir configuration value in puppet.conf
 #   [*manifest*]              - The manifest configuration value in puppet.conf
+#   [*templatedir*]           - The path to templates
 #   [*certname*]              - The certname configuration value in puppet.conf
 #   [*autosign*]              - The autosign configuration value in puppet.conf
 #   [*puppet_server*]         - The server configuration value in puppet.conf
@@ -85,6 +86,7 @@ class puppet (
   $reporting                = true,
   $confdir                  = $puppet::params::confdir,
   $manifest                 = $puppet::params::manifest,
+  $templatedir              = $puppet::params::templatedir,
   $modulepath               = $puppet::params::modulepath,
   $puppet_conf              = $puppet::params::puppet_conf,
   $puppet_logdir            = $puppet::params::puppet_logdir,
@@ -163,6 +165,7 @@ class puppet (
       certname                  => $certname,
       autosign                  => $autosign,
       manifest                  => $manifest,
+      templatedir               => $templatedir,
       puppet_master_service     => $puppet_master_service,
       puppet_master_package     => $puppet_master_package,
       package_provider          => $package_provider,

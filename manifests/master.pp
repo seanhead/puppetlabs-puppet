@@ -7,6 +7,7 @@
 #                               puppet.conf
 #   [*confdir*]               - The confdir configuration value in puppet.conf
 #   [*manifest*]              - The manifest configuration value in puppet.conf
+#   [*templatedir*]           - The path to templates
 #   [*reporting*]             - Turn reporting on or off
 #   [*storeconfigs*]          - Boolean determining whether storeconfigs is
 #                               to be enabled.
@@ -63,6 +64,7 @@ class puppet::master (
   $confdir = $::puppet::params::confdir,
   $puppet_conf = $::puppet::params::puppet_conf,
   $manifest = $::puppet::params::manifest,
+  $templatedir = $::puppet::params::templatedir,
   $reporting = true,
   $storeconfigs = false,
   $storeconfigs_dbadapter = $::puppet::params::storeconfigs_dbadapter,
