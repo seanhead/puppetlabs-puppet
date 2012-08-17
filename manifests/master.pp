@@ -139,7 +139,7 @@ class puppet::master (
       ssl        => true,
     }
 
-    file { ["${confdir}/rack", "${confdir}/rack/public"]:
+    file { "${confdir}/rack":
       ensure => directory,
       mode   => '0755',
     }
