@@ -124,6 +124,8 @@ class puppet (
 
 ) inherits puppet::params {
 
+  include concat::setup
+
   if $dashboard {
     class {'dashboard':
       dashboard_ensure       => $dashboard_ensure,
