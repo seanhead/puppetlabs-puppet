@@ -118,8 +118,6 @@ class puppet::master (
     $service_notify  = Service['httpd']
     $service_require = [Package[$puppet_master_package], Class['passenger']]
 
-    Concat::Fragment['puppet.conf-master'] -> Service['httpd']
-
     exec { "Certificate_Check":
       command   => "puppet cert --generate ${certname} --trace",
       unless    => "/bin/ls ${puppet_ssldir}/certs/${certname}.pem",
@@ -153,24 +151,10 @@ class puppet::master (
       source => "puppet:///modules/puppet/config.ru",
       mode   => '0644',
     }
-
-    concat::fragment { 'puppet.conf-master':
-      order   => '05',
-      target  => $puppet_conf,
-      content => template("puppet/puppet.conf-master.erb"),
-    }
   } else {
 
     $service_require = Package[$puppet_master_package]
     $service_notify = Exec['puppet_master_start']
-
-    Concat::Fragment['puppet.conf-master'] -> Exec['puppet_master_start']
-
-    concat::fragment { 'puppet.conf-master':
-      order   => '05',
-      target  => $puppet_conf,
-      content => template("puppet/puppet.conf-master.erb"),
-    }
 
     exec { 'puppet_master_start':
       command   => '/usr/bin/nohup puppet master &',
@@ -179,6 +163,13 @@ class puppet::master (
       require   => File[$puppet_conf],
       subscribe => Package[$puppet_master_package],
     }
+  }
+
+  concat::fragment { 'puppet.conf-master':
+    order   => '05',
+    target  => $puppet_conf,
+    content => template("puppet/puppet.conf-master.erb"),
+    notify  => $service_notify,
   }
 
   Concat<| title == $puppet_conf |> {
