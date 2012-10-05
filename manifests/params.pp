@@ -41,6 +41,7 @@ class puppet::params {
       $puppet_logdir                = '/var/log/puppet'
       $puppet_vardir                = '/var/lib/puppet'
       $puppet_ssldir                = '/var/lib/puppet/ssl'
+      $rack_config_source           = "puppet:///modules/puppet/config.ru"
     }
     'ubuntu', 'debian': {
       $puppet_master_package        = 'puppet'
@@ -54,6 +55,7 @@ class puppet::params {
       $puppet_logdir                = '/var/log/puppet'
       $puppet_vardir                = '/var/lib/puppet'
       $puppet_ssldir                = '/var/lib/puppet/ssl'
+      $rack_config_source           = '/usr/share/puppet/ext/rack/files/config.ru'
     }
     'freebsd': {
       $puppet_agent_service         = 'puppet'
@@ -62,6 +64,7 @@ class puppet::params {
       $puppet_logdir                = '/var/log/puppet'
       $puppet_vardir                = '/var/puppet'
       $puppet_ssldir                = '/var/puppet/ssl'
+      $rack_config_source           = "puppet:///modules/puppet/config.ru"
     }
     'darwin': {
       $puppet_agent_service         = 'com.puppetlabs.puppet'
@@ -70,6 +73,7 @@ class puppet::params {
       $puppet_logdir                = '/var/log/puppet'
       $puppet_vardir                = '/var/lib/puppet'
       $puppet_ssldir                = '/etc/puppet/ssl'
+      $rack_config_source           = "puppet:///modules/puppet/config.ru"
     }
   }
 

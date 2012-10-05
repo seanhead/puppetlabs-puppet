@@ -148,8 +148,9 @@ class puppet::master (
 
     file { "${confdir}/rack/config.ru":
       ensure => present,
-      source => "puppet:///modules/puppet/config.ru",
+      source => $puppet::params::rack_config_source,
       mode   => '0644',
+      require => Package[$puppet_master_package],
     }
   } else {
 
