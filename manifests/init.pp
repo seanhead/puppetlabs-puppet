@@ -96,6 +96,7 @@ class puppet (
   $puppet_master_service    = $puppet::params::puppet_master_service,
   $puppet_agent_service     = $puppet::params::puppet_agent_service,
   $puppet_server            = $puppet::params::puppet_server,
+  $environment              = $puppet::params::environment,
   $puppet_passenger         = false,
   $puppet_site              = $puppet::params::puppet_site,
   $puppet_passenger_port    = $puppet::params::puppet_passenger_port,
