@@ -60,7 +60,6 @@
 #  }
 #
 class puppet::master (
-  $environment = $::puppet::params::environment,
   $modulepath = $::puppet::params::modulepath,
   $confdir = $::puppet::params::confdir,
   $puppet_conf = $::puppet::params::puppet_conf,

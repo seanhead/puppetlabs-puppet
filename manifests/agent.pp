@@ -13,7 +13,6 @@
 class puppet::agent(
   $puppet_server,
   $environment = $::puppet::params::environment,
-  $certname = $::puppet::params::certname,
   $puppet_defaults = $::puppet::params::puppet_defaults,
   $puppet_agent_service = $::puppet::params::puppet_agent_service,
   $puppet_agent_name = $::puppet::params::puppet_agent_name,

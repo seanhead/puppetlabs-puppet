@@ -179,10 +179,10 @@ class puppet (
   if $agent {
     class {'puppet::agent':
       version                   => $version,
-      certname                  => $certname,
       puppet_defaults           => $puppet_defaults,
       puppet_agent_service      => $puppet_agent_service,
       puppet_server             => $puppet_server,
+      environment               => $environment,
       puppet_conf               => $puppet_conf,
       puppet_agent_name         => $puppet_agent_name,
       package_provider          => $package_provider,
