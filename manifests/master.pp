@@ -84,7 +84,8 @@ class puppet::master (
   $puppet_master_package = $::puppet::params::puppet_master_package,
   $package_provider = undef,
   $puppet_master_service = $::puppet::params::puppet_master_service,
-  $version = 'present'
+  $version = 'present',
+  $paternalistic = true,
 
 ) inherits puppet::params {
 
@@ -98,12 +99,13 @@ class puppet::master (
 
   if $storeconfigs {
     class { 'puppet::storeconfigs':
-      puppet_conf => $puppet_conf,
-      dbadapter   => $storeconfigs_dbadapter,
-      dbuser      => $storeconfigs_dbuser,
-      dbpassword  => $storeconfigs_dbpassword,
-      dbserver    => $storeconfigs_dbserver,
-      dbsocket    => $storeconfigs_dbsocket,
+      puppet_conf   => $puppet_conf,
+      dbadapter     => $storeconfigs_dbadapter,
+      dbuser        => $storeconfigs_dbuser,
+      dbpassword    => $storeconfigs_dbpassword,
+      dbserver      => $storeconfigs_dbserver,
+      dbsocket      => $storeconfigs_dbsocket,
+      paternalistic => $paternalistic,
     }
   }
 

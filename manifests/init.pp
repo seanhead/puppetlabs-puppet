@@ -125,7 +125,8 @@ class puppet (
   $dashboard_port           = undef,
   $dashboard_passenger      = undef,
   $dashboard_mysql_provider = undef,
-  $dashboard_mysql_pkg      = undef
+  $dashboard_mysql_pkg      = undef,
+  $paternalistic            = true,
 
 ) inherits puppet::params {
 
@@ -173,6 +174,7 @@ class puppet (
       puppet_master_package     => $puppet_master_package,
       package_provider          => $package_provider,
       dashboard_port            => $dashboard_port,
+      paternalistic             => $paternalistic,
     }
   }
 
