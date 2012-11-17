@@ -10,8 +10,10 @@
 #                               master service should be setup
 #   [*agent*]                 - Boolean determining whether the puppet agent
 #                               should be setup
+#   [*reporting*]             - Turn reporting on or off
 #   [*confdir*]               - The confdir configuration value in puppet.conf
 #   [*manifest*]              - The manifest configuration value in puppet.conf
+#   [*templatedir*]           - The path to templates
 #   [*certname*]              - The certname configuration value in puppet.conf
 #   [*autosign*]              - The autosign configuration value in puppet.conf
 #   [*puppet_server*]         - The server configuration value in puppet.conf
@@ -81,8 +83,10 @@ class puppet (
   $version                  = 'present',
   $master                   = false,
   $agent                    = true,
+  $reporting                = true,
   $confdir                  = $puppet::params::confdir,
   $manifest                 = $puppet::params::manifest,
+  $templatedir              = $puppet::params::templatedir,
   $modulepath               = $puppet::params::modulepath,
   $puppet_conf              = $puppet::params::puppet_conf,
   $puppet_logdir            = $puppet::params::puppet_logdir,
@@ -91,8 +95,8 @@ class puppet (
   $puppet_defaults          = $puppet::params::puppet_defaults,
   $puppet_master_service    = $puppet::params::puppet_master_service,
   $puppet_agent_service     = $puppet::params::puppet_agent_service,
-  $puppet_agent_enabled     = $puppet::params::puppet_agent_enabled,
   $puppet_server            = $puppet::params::puppet_server,
+  $environment              = $puppet::params::environment,
   $puppet_passenger         = false,
   $puppet_site              = $puppet::params::puppet_site,
   $puppet_passenger_port    = $puppet::params::puppet_passenger_port,
@@ -121,9 +125,12 @@ class puppet (
   $dashboard_port           = undef,
   $dashboard_passenger      = undef,
   $dashboard_mysql_provider = undef,
-  $dashboard_mysql_pkg      = undef
+  $dashboard_mysql_pkg      = undef,
+  $paternalistic            = true,
 
 ) inherits puppet::params {
+
+  include concat::setup
 
   if $dashboard {
     class {'dashboard':
@@ -145,6 +152,7 @@ class puppet (
     class {'puppet::master':
       version                   => $version,
       confdir                   => $confdir,
+      puppet_conf               => $puppet_conf,
       puppet_passenger          => $puppet_passenger,
       puppet_site               => $puppet_site,
       puppet_passenger_port     => $puppet_passenger_port,
@@ -161,11 +169,12 @@ class puppet (
       certname                  => $certname,
       autosign                  => $autosign,
       manifest                  => $manifest,
+      templatedir               => $templatedir,
       puppet_master_service     => $puppet_master_service,
       puppet_master_package     => $puppet_master_package,
       package_provider          => $package_provider,
       dashboard_port            => $dashboard_port,
-      puppet_server             => $puppet_server
+      paternalistic             => $paternalistic,
     }
   }
 
@@ -175,10 +184,11 @@ class puppet (
       puppet_defaults           => $puppet_defaults,
       puppet_agent_service      => $puppet_agent_service,
       puppet_server             => $puppet_server,
+      environment               => $environment,
       puppet_conf               => $puppet_conf,
       puppet_agent_name         => $puppet_agent_name,
       package_provider          => $package_provider,
-      puppet_agent_enabled      => $puppet_agent_enabled,
+      reporting                 => $reporting,
     }
   }
 
@@ -193,14 +203,22 @@ class puppet (
     gid    => $group_id,
   }
 
-  if ! defined(File['/etc/puppet']) {
-    file { '/etc/puppet':
-      ensure       => directory,
-      group        => 'puppet',
-      owner        => 'puppet',
-      recurse      => true,
-      recurselimit => '1',
-    }
+  file { $confdir:
+    ensure       => directory,
+    group        => 'puppet',
+    owner        => 'puppet',
+    recurse      => true,
+    recurselimit => '1',
+  }
+
+  concat { $puppet_conf:
+    mode    => '0644',
+  }
+
+  concat::fragment { 'puppet.conf-common':
+    order   => '00',
+    target  => $puppet_conf,
+    content => template("puppet/puppet.conf-common.erb"),
   }
 
 }

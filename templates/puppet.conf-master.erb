@@ -1,18 +1,17 @@
-##
-#puppet origin: puppet.conf-master.erb
-
 [master]
 modulepath                = <%= modulepath %>
 manifest                  = <%= manifest %>
-environment               = <%= environment %>
+templatedir               = <%= templatedir %>
 autosign                  = <%= autosign %>
 ssl_client_header         = SSL_CLIENT_S_DN
 ssl_client_verify_header  = SSL_CLIENT_VERIFY
-certname                  = <%= certname %>
-report                    = <%= report %>
+report                    = <%= reporting %>
+<%- if reporting -%>
 reports                   = store, http
-<% if dashboard_port != 'UNSET' -%>
+<%- if dashboard_port != 'UNSET' -%>
 reporturl                 = http://<%= puppet_site %>:<%= dashboard_port %>/reports
-<% else -%>
+<%- else -%>
 reporturl                 = http://<%= puppet_site %>/reports
-<% end -%>
+<%- end -%>
+<%- end -%>
+
